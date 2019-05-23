@@ -1,6 +1,6 @@
 # Demo spark
 
-Testing spark eficiency on a simple scapping + ner case (the most frequent term).
+Simple test for spark eficiency on a scapping + nlp case. It downloads the same a articles and process them n times. There are 3 difierent aproximations, and all of them return the most frequent terms.
 
 ## Dependencies
 
