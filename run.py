@@ -4,6 +4,9 @@ import argparse
 import requests
 import timeit
 
+# Third party imports
+from pyspark import SparkContext
+
 # Local application imports
 from src.base import base_wiki_ner
 from src.case1 import case1_wiki_ner
@@ -28,13 +31,16 @@ if(args.n is None or args.n < 1):
 # We download the articles so the conection or diferent lenghts don`t affect
 articles = list(_wikipedia_pages_generator(args.a))
 
-res = base_wiki_ner(articles)
-res1 = case1_wiki_ner(articles)
-res2 = case2_wiki_ner(articles)
+# Spark context
+sc = SparkContext.getOrCreate()
 
-t = timeit.timeit("base_wiki_ner(articles)", globals=globals(), number=1)
-t1 = timeit.timeit("case1_wiki_ner(articles)", globals=globals(), number=1)
-t2 = timeit.timeit("case2_wiki_ner(articles)", globals=globals(), number=1)
+res = base_wiki_ner(articles)
+res1 = case1_wiki_ner(articles,sc)
+res2 = case2_wiki_ner(articles,sc)
+
+t = timeit.timeit("base_wiki_ner(articles)", globals=globals(), number=args.n)
+t1 = timeit.timeit("case1_wiki_ner(articles,sc)", globals=globals(), number=args.n)
+t2 = timeit.timeit("case2_wiki_ner(articles,sc)", globals=globals(), number=args.n)
 
 print("Result {} articles, {} iterations: \n\
 \tEqual results: {}\n\
@@ -45,4 +51,4 @@ print("Result {} articles, {} iterations: \n\
 Timing:\n\
 \tBase: \t \t {}\n\
 \tCase 1: \t {}\n\
-\tCase 2: \t {}\n".format(args.a, args.n, res == res1 == res2, res[:3], res1[:3], res2[:3], t, t1, t2))
+\tCase 2: \t {}\n".format(args.a, args.n, res == res1 == res2, res, res1, res2, t, t1, t2))
