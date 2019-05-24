@@ -11,10 +11,10 @@ BeautifulSoup, Pyspark, nltk, java 1.8 and python 3.7
 To run 6 articles, timing them 5 times, use:
 
 ```bash
-python run.py -a 50 -n 2
+python run.py -a 6 -n 5
 ```
 
-To run spark:
+Spark environment must be runing in your local machine:
 
 ```bash
 ./start-master.sh -h 127.0.0.1
